@@ -33,21 +33,21 @@ function(install_universal_ios_static_library destination)
   set(config "${CMAKE_INSTALL_CONFIG_NAME}")
 
   # Detect architectures
-  execute_process(
-      COMMAND
-      xcodebuild -sdk iphonesimulator -showBuildSettings
-      COMMAND
-      sed -n "s,.* VALID_ARCHS = ,,p"
-      WORKING_DIRECTORY
-      "${work_dir}"
-      RESULT_VARIABLE result
-      OUTPUT_VARIABLE IPHONESIMULATOR_ARCHS
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
+  # execute_process(
+  #     COMMAND
+  #     xcodebuild -sdk iphonesimulator -showBuildSettings
+  #     COMMAND
+  #     sed -n "s,.* VALID_ARCHS = ,,p"
+  #     WORKING_DIRECTORY
+  #     "${work_dir}"
+  #     RESULT_VARIABLE result
+  #     OUTPUT_VARIABLE IPHONESIMULATOR_ARCHS
+  #     OUTPUT_STRIP_TRAILING_WHITESPACE
+  # )
 
-  if(NOT ${result} EQUAL 0)
-    message(FATAL_ERROR "xcodebuild failed")
-  endif()
+  # if(NOT ${result} EQUAL 0)
+  #   message(FATAL_ERROR "xcodebuild failed")
+  # endif()
 
   execute_process(
       COMMAND
@@ -139,60 +139,60 @@ function(install_universal_ios_static_library destination)
     message(FATAL_ERROR "${iphoneos_src} not found")
   endif()
 
-  message(STATUS "[iOS universal] Build `${target}` for `iphonesimulator`")
+  # message(STATUS "[iOS universal] Build `${target}` for `iphonesimulator`")
 
-  execute_process(
-      COMMAND
-      "${CMAKE_COMMAND}"
-      --build
-      .
-      --target "${target}"
-      --config ${config}
-      --
-      -sdk iphonesimulator
-      ONLY_ACTIVE_ARCH=NO
-      "ARCHS=${IPHONESIMULATOR_ARCHS}"
-      WORKING_DIRECTORY
-      "${work_dir}"
-      RESULT_VARIABLE
-      result
-  )
+  # execute_process(
+  #     COMMAND
+  #     "${CMAKE_COMMAND}"
+  #     --build
+  #     .
+  #     --target "${target}"
+  #     --config ${config}
+  #     --
+  #     -sdk iphonesimulator
+  #     ONLY_ACTIVE_ARCH=NO
+  #     "ARCHS=${IPHONESIMULATOR_ARCHS}"
+  #     WORKING_DIRECTORY
+  #     "${work_dir}"
+  #     RESULT_VARIABLE
+  #     result
+  # )
 
-  if(NOT ${result} EQUAL 0)
-    message(FATAL_ERROR "Build failed")
-  endif()
+  # if(NOT ${result} EQUAL 0)
+  #   message(FATAL_ERROR "Build failed")
+  # endif()
 
-  execute_process(
-      COMMAND
-      xcodebuild
-      -showBuildSettings
-      -target
-      "${target}"
-      -configuration
-      "${config}"
-      -sdk
-      iphonesimulator
-      COMMAND
-      sed -n "s,.* CODESIGNING_FOLDER_PATH = ,,p"
-      WORKING_DIRECTORY
-      "${work_dir}"
-      RESULT_VARIABLE result
-      OUTPUT_VARIABLE iphonesimulator_src
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
+  # execute_process(
+  #     COMMAND
+  #     xcodebuild
+  #     -showBuildSettings
+  #     -target
+  #     "${target}"
+  #     -configuration
+  #     "${config}"
+  #     -sdk
+  #     iphonesimulator
+  #     COMMAND
+  #     sed -n "s,.* CODESIGNING_FOLDER_PATH = ,,p"
+  #     WORKING_DIRECTORY
+  #     "${work_dir}"
+  #     RESULT_VARIABLE result
+  #     OUTPUT_VARIABLE iphonesimulator_src
+  #     OUTPUT_STRIP_TRAILING_WHITESPACE
+  # )
 
-  if(NOT ${result} EQUAL 0)
-    message(FATAL_ERROR "Xcode failed")
-  endif()
-  if(NOT EXISTS "${iphonesimulator_src}")
-    message(FATAL_ERROR "${iphonesimulator_src} not found")
-  endif()
+  # if(NOT ${result} EQUAL 0)
+  #   message(FATAL_ERROR "Xcode failed")
+  # endif()
+  # if(NOT EXISTS "${iphonesimulator_src}")
+  #   message(FATAL_ERROR "${iphonesimulator_src} not found")
+  # endif()
 
   execute_process(
       COMMAND
       lipo
       -create
-      "${iphonesimulator_src}"
+      # "${iphonesimulator_src}"
       "${iphoneos_src}"
       -output ${library_destination}
       WORKING_DIRECTORY
